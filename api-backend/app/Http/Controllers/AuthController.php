@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -50,10 +51,61 @@ class AuthController extends Controller
     }
 
     // login User
-    public function login() {}
+    public function login(Request $request)
+    {
+        // validating
+        $validate = Validator::make($request->all(), [
+            'email' => 'required|string|email',
+            'password' => 'required|string|min:6'
+        ]);
+
+        // return error while validating
+        if ($validate->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validate->errors()
+            ], 422);
+            # code...
+        }
+
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid credentials'
+            ], 401);
+        }
+
+        $user = Auth::user();
+
+        // generating token
+        $token = $user->createToken('myToken')->plainTextToken;
+
+        return response()->json([
+            'status' => true,
+            'message' => 'User logged in successfully',
+            'data' => $user,
+            'token' => $token
+        ], 200);
+    }
 
 
-    public function profile() {}
+    public function profile()
+    {
+        $user = Auth::user();
+        return response()->json([
+            'status' => true,
+            'message' => 'User profile',
+            'data' => $user
+        ], 200);
+    }
 
-    public function logout() {}
+    public function logout()
+    {
+        Auth::logout();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'User logged out successfully'
+        ], 200);
+    }
 }
