@@ -1,5 +1,6 @@
 "use client";
 
+import Link from 'next/link';
 // pages/auth.tsx
 import { useState, FormEvent } from 'react';
 
@@ -13,9 +14,15 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-800 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-white px-4">
       <div className="w-full max-w-md p-8 space-y-6 bg-gray-700 rounded-lg shadow-md">
+        <center>
+        <Link href="/" className="text-xl font-bold text-rose-600">
+        <span className="bg-white px-2">Mini</span> <span className="text-white">Market</span>
+          </Link>
+        </center>
         <h2 className="text-2xl font-bold text-center">
+          
           {isLogin ? 'Login to Your Account' : 'Create an Account'}
         </h2>
         <form className="space-y-4" onSubmit={handleSubmit}>
@@ -57,7 +64,8 @@ export default function AuthPage() {
               required
             />
           </div>
-          <div>
+          {!isLogin && (
+            <div>
             <label htmlFor="confirm_password" className="block mb-1 text-sm font-medium">
               Confirm Password
             </label>
@@ -69,6 +77,7 @@ export default function AuthPage() {
               required
             />
           </div>
+          )}
           <button
             type="submit"
             className="w-full py-2 text-white bg-rose-600 rounded-md cursor-pointer hover:bg-rose-700 transition"
