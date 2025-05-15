@@ -17,7 +17,7 @@ export default function AuthPage() {
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
       <div className="w-full max-w-md p-8 space-y-6 bg-gray-700 rounded-lg shadow-md">
         <center>
-        <Link href="/" className="text-xl font-bold text-rose-600">
+        <Link href="/" className="text-3xl font-bold text-rose-600">
         <span className="bg-white px-2">Mini</span> <span className="text-white">Market</span>
           </Link>
         </center>
@@ -85,11 +85,11 @@ export default function AuthPage() {
             {isLogin ? 'Login' : 'Sign Up'}
           </button>
         </form>
-        <p className="text-sm text-center text-gray-600">
+        <p className="text-sm text-center text-white">
           {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
           <button
             onClick={() => setIsLogin(!isLogin)}
-            className="text-blue-600 hover:underline"
+            className="text-rose-600 hover:underline"
           >
             {isLogin ? 'Sign Up' : 'Login'}
           </button>
