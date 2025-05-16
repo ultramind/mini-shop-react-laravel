@@ -22,9 +22,10 @@ const products:Product[] = [
 
 const ProductListCard: FC = () => {
   return (
-    <div className="bg-white rounded-lg shadow p-6 overflow-x-auto w-[65%]">
+    <div className="bg-white rounded-lg shadow p-6 overflow-x-auto w-full md:w-[65%]">
       <h2 className="text-xl font-semibold text-gray-800 mb-4">Product List</h2>
-      <table className="min-w-full divide-y divide-gray-200">
+      <div className="w-full min-w-[700px] overflow-x-auto">
+      <table className="min-w-full divide-y divide-gray-200 overflow-x-scroll">
         <thead className="bg-gray-50">
           <tr>
             <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">ID</th>
@@ -49,6 +50,7 @@ const ProductListCard: FC = () => {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 };

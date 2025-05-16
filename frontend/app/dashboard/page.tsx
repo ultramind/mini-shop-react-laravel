@@ -17,7 +17,7 @@ const page = () => {
                 <p className='text-gray-500 ml-2'>Add Product</p>
             </div>
         </div>
-        <div className='flex justify-between w-full px-30 py-8 gap-6'> 
+        <div className='flex flex-col md:flex-row justify-between w-full p-4 md:px-30 md:py-8 gap-6'> 
             <AddProductPage/>
             <ProductListCard/>
         </div>

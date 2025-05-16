@@ -41,7 +41,7 @@ export default function AddProductPage() {
         <title>Add Product | Tech Shop</title>
       </Head>
 
-      <main className="px-4 flex items-center justify-center w-[35%]">
+      <main className="px-4 flex items-center justify-center w-full md:w-[35%]">
         <div className="w-full max-w-2xl bg-white p-8 rounded-lg shadow">
           <h1 className="text-2xl font-bold mb-6 text-gray-800">Add a New Product</h1>
 
