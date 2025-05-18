@@ -1,10 +1,28 @@
+
+"use client"
 import AddProductPage from '@/components/AddProduct'
 import Footer from '@/components/Footer'
 import Navbar from '@/components/NavBar'
 import ProductListCard from '@/components/ProductListCard'
-import React from 'react'
+import { useAppHook } from '@/context/AppProvider'
+import { useRouter } from 'next/navigation'
+import React, { useEffect } from 'react'
 
 const page = () => {
+
+  const {authToken}  = useAppHook()
+  const router = useRouter();
+
+
+    // checking if the user is logged in
+    useEffect(() => {
+      if (!authToken) {
+        router.push('/auth')
+      }
+      return;
+    }, [])
+
+
   return (
     <div className='bg-white min-h-screen text-black'>
         <Navbar/>

@@ -3,12 +3,17 @@
 import Loader from '@/components/Loader';
 import { useAppHook } from '@/context/AppProvider';
 import Link from 'next/link';
+import {useRouter} from 'next/navigation'
 // pages/auth.tsx
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 
 export default function AuthPage() {
-  const {login, register, isLoading} = useAppHook();
+  const {login, register, isLoading, authToken} = useAppHook();
   const [isLogin, setIsLogin] = useState<boolean>(true);
+  const router = useRouter()
+
+  // console.log("authToken", authToken)
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,7 +30,6 @@ export default function AuthPage() {
     e.preventDefault();
     // Add login/signup logic here
    if (isLogin) {
-    console.log("Login user", formData)
     try {
       await login(formData.email, formData.password);
     } catch (error) {
@@ -37,7 +41,6 @@ export default function AuthPage() {
       await register(formData.name, formData.email, formData.password, formData.password_confirmation);
     } catch (error) {
       console.log("Register error", error);
-      
     }
     // setFormData({
     //   name: "",
@@ -48,6 +51,16 @@ export default function AuthPage() {
     setIsLogin(true);
    }
   };
+
+
+  // checking if the user is logged in
+  useEffect(() => {
+    if (authToken) {
+      router.push('/dashboard')
+      console.log(authToken)
+    }
+    return;
+  }, [])
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
