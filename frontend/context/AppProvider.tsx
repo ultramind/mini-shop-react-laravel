@@ -28,12 +28,12 @@ const AppProvider = ({children} : Readonly<{children: React.ReactNode}>) => {
     // checking if user is logged in
     useEffect(() => {
         const token = Cookies.get("authToken")
+        
         if (token) {
             setAuthToken(token)
         }else{
             router.push("/auth");
         }
-        return
     }, [])
 
     

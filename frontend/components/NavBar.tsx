@@ -2,9 +2,11 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import {useAppHook} from "../context/AppProvider"
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { logout, authToken} = useAppHook()
 
   return (
     <nav className="bg-gray-800 text-white shadow-md sticky -top-1 z-50">
@@ -20,7 +22,16 @@ export default function Navbar() {
             <Link href="/" className="text-white hover:text-rose-600 transition">Home</Link>
             <Link href="#products" className="text-white hover:text-rose-600 transition">Products</Link>
             <Link href="#contact" className="text-white hover:text-rose-600 transition">Contact</Link>
-            <Link href="/auth" className="text-white  bg-rose-600 py-2 px-4 rounded hover:text-white transition ">Login</Link>
+            
+            {authToken ? (
+              <>
+                <Link href="/dashboard" className="text-white hover:text-rose-600 transition">Dashboard</Link>
+            
+                <button className="text-white  bg-rose-600 py-2 px-4 rounded hover:text-white transition " onClick={logout}>Logout</button>              
+              </>
+            ): (
+              <Link href="/auth" className="text-white  bg-rose-600 py-2 px-4 rounded hover:text-white transition ">Login</Link> 
+              ) }
           </div>
 
           {/* Mobile menu toggle */}
@@ -39,7 +50,16 @@ export default function Navbar() {
             <Link href="/" className="text-white hover:text-rose-600">Home</Link>
             <Link href="#products" className="text-white hover:text-rose-600">Products</Link>
             <Link href="#contact" className="text-white hover:text-rose-600">Contact</Link>
-            <Link href="/auth" className="text-white  bg-rose-600 py-2 px-4 rounded w-max hover:text-white transition ">Login</Link>
+            
+            {authToken ? (
+              <>
+                <Link href="/dashboard" className="text-white hover:text-rose-600 transition">Dashboard</Link>
+            
+                <button className="text-white  bg-rose-600 py-2 px-4 rounded hover:text-white transition " onClick={logout}>Logout</button>              
+              </>
+            ): (
+              <Link href="/auth" className="text-white  bg-rose-600 py-2 px-4 rounded hover:text-white transition ">Login</Link> 
+              ) }
           </div>
         )}
       </div>

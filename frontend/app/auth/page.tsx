@@ -12,7 +12,14 @@ export default function AuthPage() {
   const [isLogin, setIsLogin] = useState<boolean>(true);
   const router = useRouter()
 
-  // console.log("authToken", authToken)
+
+  // checking if the user is logged in
+  useEffect(() => {
+    if (authToken) {
+      router.push('/dashboard')
+      return;
+    }
+  }, [authToken])
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,14 +60,7 @@ export default function AuthPage() {
   };
 
 
-  // checking if the user is logged in
-  useEffect(() => {
-    if (authToken) {
-      router.push('/dashboard')
-      console.log(authToken)
-    }
-    return;
-  }, [])
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
