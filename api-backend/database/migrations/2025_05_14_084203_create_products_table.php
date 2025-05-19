@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->longText('description');
-            $table->string('banner_image');
+            $table->string('banner_image')->nullable();
             $table->integer('cost');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();

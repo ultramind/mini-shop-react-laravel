@@ -52,7 +52,16 @@ class ProductController extends Controller
 
         $data = $request->all();
 
-        $user_id = Auth::user()->id;
+
+
+        $user_id = auth()->user()->id;
+        $data['user_id'] = $user_id;
+
+
+        // return response()->json([
+        //     'data' => $data
+        // ]);
+
         // checking if request has file
         if ($request->hasFile('banner_image')) {
             $data['banner_image'] = $request->file('banner_image')->store('products', 'public');
@@ -65,7 +74,6 @@ class ProductController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Product created successfully',
-                'data' => $product
             ], 201);
         } catch (\Exception $err) {
             return response()->json([
