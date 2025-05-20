@@ -2,14 +2,9 @@
 "use client";
 
 
-import { FC, useEffect, useState } from "react";
-import axios from "axios";
-import { useAppHook } from "@/context/AppProvider";
+import { FC } from "react";
 import Loader from "./Loader";
-import Image from "next/image";
 import { useProductHook } from "@/context/ProductProvider";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 type Product = {
   id: number;
@@ -23,41 +18,9 @@ interface ProductTableCardProps {
   products: Product[];
 }
 
-// const products:Product[] = [
-//     { id: 1, name: "MacBook Pro", category: "Laptops", price: "$1999", stock: 12 },
-//     { id: 2, name: "Galaxy S24", category: "Smartphones", price: "$1199", stock: 35 },
-//     { id: 3, name: "Sony XM5", category: "Headphones", price: "$349", stock: 58 },
-//     { id: 4, name: "iPad Pro", category: "Tablets", price: "$799", stock: 20 },
-//   ];
 
 const ProductListCard: FC = () => {
-  // const [products, setProducts] = useState<Product[]>([])
-  // const [isLoading, setIsLoading] = useState<boolean>(true)
-  const {authToken} = useAppHook();
-  const {products, isLoading} = useProductHook()
-
-
-  // useEffect(() => {
-  //   fetchAllProduct();
-  // }, [])
-
-  // fetching all products
-  // const fetchAllProduct = async ()=>{
-  //   try {
-  //     const response = await axios.get(`${API_URL}/products`, {
-  //       headers: {
-  //         Authorization: `Bearer ${authToken}`
-  //       }
-  //     })
-  //     if (response.status) {
-  //       setProducts(response.data.products)
-  //       // console.log(response);
-  //     }
-  //   } catch (err) {
-  //     console.log("fetch product err", err)
-  //   }
-  //   setIsLoading(false)
-  // }
+  const {products, isLoading, handleDelete} = useProductHook()
 
   return (
     <div className="bg-white rounded-lg shadow p-6 overflow-x-auto w-full md:w-[65%]">
@@ -86,7 +49,7 @@ const ProductListCard: FC = () => {
                     <td className="px-4 py-2 text-sm text-green-600 font-semibold">{product.cost}</td>
                     <td className="px-4 py-2 text-sm text-gray-700">
                       <button className="px-3 py-2 bg-amber-400 font-bold rounded cursor-pointer mr-3">Edit</button>
-                      <button className="px-3 py-2 bg-red-500 font-bold rounded cursor-pointer text-white">Delete</button>
+                      <button className="px-3 py-2 bg-red-500 font-bold rounded cursor-pointer text-white" onClick={()=> handleDelete(product.id)}>Delete</button>
                     </td>
                   </tr>
                 ))}

@@ -12,7 +12,8 @@ interface ProductContextType {
     handleChange: any,
     fileRef: any,
     isLoading: boolean,
-    products: Product[]
+    products: Product[],
+    handleDelete: any
 }
 
 interface ProductType {
@@ -124,12 +125,31 @@ const ProductProvider = ({children} : Readonly<{children: ReactNode}>) => {
     fetchAllProduct();
   }, [])
 
+
+  const handleDelete = async(id:number) => {
+    setIsLoading(true)
+    const res = confirm("Are you sure u want to delete the product")
+    if (res) {
+      try {
+        const response = await axios.delete(`${API_URL}/products/${id}`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`
+          }
+        })
+        console.log(response)
+        fetchAllProduct()
+      } catch (error) {
+        console.log("Delete pro error", error)
+      }
+      setIsLoading(false)
+    }
+  }
   
 
 
 
     return (
-        <ProductContext.Provider value={{ formData, handleChange, handleSubmit, fileRef, isLoading, products  }}>
+        <ProductContext.Provider value={{ formData, handleChange, handleSubmit, fileRef, isLoading, products, handleDelete  }}>
             {children}
         </ProductContext.Provider>
     )
