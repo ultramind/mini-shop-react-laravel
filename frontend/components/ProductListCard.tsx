@@ -7,6 +7,7 @@ import axios from "axios";
 import { useAppHook } from "@/context/AppProvider";
 import Loader from "./Loader";
 import Image from "next/image";
+import { useProductHook } from "@/context/ProductProvider";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
@@ -30,32 +31,33 @@ interface ProductTableCardProps {
 //   ];
 
 const ProductListCard: FC = () => {
-  const [products, setProducts] = useState<Product[]>([])
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+  // const [products, setProducts] = useState<Product[]>([])
+  // const [isLoading, setIsLoading] = useState<boolean>(true)
   const {authToken} = useAppHook();
+  const {products, isLoading} = useProductHook()
 
 
-  useEffect(() => {
-    fetchAllProduct();
-  }, [])
+  // useEffect(() => {
+  //   fetchAllProduct();
+  // }, [])
 
   // fetching all products
-  const fetchAllProduct = async ()=>{
-    try {
-      const response = await axios.get(`${API_URL}/products`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`
-        }
-      })
-      if (response.status) {
-        setProducts(response.data.products)
-        console.log(response);
-      }
-    } catch (err) {
-      console.log("fetch product err", err)
-    }
-    setIsLoading(false)
-  }
+  // const fetchAllProduct = async ()=>{
+  //   try {
+  //     const response = await axios.get(`${API_URL}/products`, {
+  //       headers: {
+  //         Authorization: `Bearer ${authToken}`
+  //       }
+  //     })
+  //     if (response.status) {
+  //       setProducts(response.data.products)
+  //       // console.log(response);
+  //     }
+  //   } catch (err) {
+  //     console.log("fetch product err", err)
+  //   }
+  //   setIsLoading(false)
+  // }
 
   return (
     <div className="bg-white rounded-lg shadow p-6 overflow-x-auto w-full md:w-[65%]">

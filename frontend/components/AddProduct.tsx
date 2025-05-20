@@ -7,6 +7,8 @@ import Image from "next/image";
 import axios from "axios";
 import { useAppHook } from "@/context/AppProvider";
 import toast from "react-hot-toast";
+import { useProductHook } from "@/context/ProductProvider";
+import Loader from "./Loader";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -19,67 +21,9 @@ interface ProductType {
 }
 
 export default function AddProductPage() {
-  const fileRef = useRef<HTMLInputElement>(null);
-  const [formData, setFormData] = useState<ProductType>({
-    title: "",
-    description: "",
-    cost: 0,
-    file: "",
-    banner_image: "",
-  });
 
-  const {authToken} = useAppHook();
-
-
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    if (e.target.files) {
-      setFormData({ ...formData, banner_image: e.target.files[0], file: URL.createObjectURL(e.target.files[0]) });
-    }else{
-      setFormData({ ...formData, [e.target.name]: e.target.value });
-    }
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
-    // Simulate saving product
-    console.log("Product submitted:", formData);
-
-    // taking to endpoint
-    try {
-      const response = await axios.post(`${API_URL}/products`, formData, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          "Content-Type": "multipart/form-data"
-        }
-      })
-
-      if (response.data.status) {
-        setSubmitted(true);
-        toast.success(response.data.message)
-      }
-    } catch (err:any) {
-      console.log("Add Product", err)
-    }
-
-
-    
-    setFormData({
-      title: "",
-      description: "",
-      cost: 0,
-      file: "",
-      banner_image: "",
-    });
-
-    // reset the file input using useRef
-    if (fileRef.current) {
-      fileRef.current.value = ""
-    }
-  };
-
+  const {formData, handleChange, handleSubmit, fileRef, isLoading}  = useProductHook()
+  
   return (
     <>
       <Head>
@@ -90,9 +34,9 @@ export default function AddProductPage() {
         <div className="w-full max-w-2xl bg-white p-8 rounded-lg shadow">
           <h1 className="text-2xl font-bold mb-6 text-gray-800">Add a New Product</h1>
 
-          {submitted && (
+          {/* {submitted && (
             <div className="mb-4 text-green-600 font-semibold">Product submitted successfully!</div>
-          )}
+          )} */}
 
           <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
@@ -167,7 +111,7 @@ export default function AddProductPage() {
               type="submit"
               className="w-full bg-rose-600 text-white py-2 rounded hover:bg-rose-700 transition"
             >
-              Add Product
+              {isLoading ? (<Loader/> ) : "Add Product"}
             </button>
           </form>
         </div>
