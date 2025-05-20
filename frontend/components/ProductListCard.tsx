@@ -7,7 +7,7 @@ import Loader from "./Loader";
 import { useProductHook } from "@/context/ProductProvider";
 
 type Product = {
-  id: number;
+  id?: number;
   title: string;
   description: string;
   cost: number;
@@ -20,7 +20,22 @@ interface ProductTableCardProps {
 
 
 const ProductListCard: FC = () => {
-  const {products, isLoading, handleDelete} = useProductHook()
+  const {products, isLoading, setFormData, fileRef, handleDelete, setIsEdit} = useProductHook()
+
+  const handleActiveProduct = (product:Product) =>{
+    setFormData({
+      id:product.id,
+      title: product.title,
+      description: product.description,
+      cost: product.cost,
+      file: product.banner_image,
+      banner_image:product.banner_image,
+    });
+
+    setIsEdit(true);
+    // fileRef.current.value = product.banner_image
+
+  }
 
   return (
     <div className="bg-white rounded-lg shadow p-6 overflow-x-auto w-full md:w-[65%]">
@@ -48,7 +63,7 @@ const ProductListCard: FC = () => {
                     </td>
                     <td className="px-4 py-2 text-sm text-green-600 font-semibold">{product.cost}</td>
                     <td className="px-4 py-2 text-sm text-gray-700">
-                      <button className="px-3 py-2 bg-amber-400 font-bold rounded cursor-pointer mr-3">Edit</button>
+                      <button className="px-3 py-2 bg-amber-400 font-bold rounded cursor-pointer mr-3" onClick={()=> handleActiveProduct(product)}>Edit</button>
                       <button className="px-3 py-2 bg-red-500 font-bold rounded cursor-pointer text-white" onClick={()=> handleDelete(product.id)}>Delete</button>
                     </td>
                   </tr>

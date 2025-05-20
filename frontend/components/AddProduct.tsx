@@ -22,17 +22,17 @@ interface ProductType {
 
 export default function AddProductPage() {
 
-  const {formData, handleChange, handleSubmit, fileRef, isLoading}  = useProductHook()
+  const {formData, handleChange, handleSubmit, fileRef, isLoading, isEdit}  = useProductHook()
   
   return (
     <>
       <Head>
-        <title>Add Product | Tech Shop</title>
+        <title>{ isEdit ? 'Update' : 'Add'} Product | Tech Shop</title>
       </Head>
 
       <main className="px-4 flex items-center justify-center w-full md:w-[35%]">
         <div className="w-full max-w-2xl bg-white p-8 rounded-lg shadow">
-          <h1 className="text-2xl font-bold mb-6 text-gray-800">Add a New Product</h1>
+          <h1 className="text-2xl font-bold mb-6 text-gray-800">{isEdit ? "Update" : "Add" } a Product</h1>
 
           {/* {submitted && (
             <div className="mb-4 text-green-600 font-semibold">Product submitted successfully!</div>
@@ -103,7 +103,7 @@ export default function AddProductPage() {
             </div>
             {formData.file && (
               <div>
-                <Image src={formData.file} width={100} height={100} alt="image preview" />
+                <img src={formData.file} width={100} height={100} alt="image preview" />
               </div>
             )}
 
@@ -111,7 +111,8 @@ export default function AddProductPage() {
               type="submit"
               className="w-full bg-rose-600 text-white py-2 rounded hover:bg-rose-700 transition"
             >
-              {isLoading ? (<Loader/> ) : "Add Product"}
+              {isEdit ? "Update Product" : "Add Product"}
+              {isLoading && (<Loader/> )}
             </button>
           </form>
         </div>

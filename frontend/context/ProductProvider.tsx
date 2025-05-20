@@ -13,10 +13,14 @@ interface ProductContextType {
     fileRef: any,
     isLoading: boolean,
     products: Product[],
-    handleDelete: any
+    handleDelete: any,
+    setFormData: any,
+    setIsEdit:any,
+    isEdit:boolean
 }
 
 interface ProductType {
+    id?: number,
     title:string,
     description:string,
     cost: number,
@@ -25,7 +29,7 @@ interface ProductType {
 }
 
 type Product = {
-    id: number;
+    id?: number;
     title: string;
     description: string;
     cost: number;
@@ -37,6 +41,7 @@ const ProductContext = createContext<ProductContextType | null >(null)
 
 const ProductProvider = ({children} : Readonly<{children: ReactNode}>) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [isEdit, setIsEdit] = useState<boolean>(false)
     const [products, setProducts] = useState<Product[]>([])
     const fileRef = useRef<HTMLInputElement>(null);
     const [formData, setFormData] = useState<ProductType>({
@@ -65,23 +70,46 @@ const ProductProvider = ({children} : Readonly<{children: ReactNode}>) => {
     e.preventDefault();
     setIsLoading(true)
 
-    // taking to endpoint
-    try {
-      const response = await axios.post(`${API_URL}/products`, formData, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          "Content-Type": "multipart/form-data"
+    if (!isEdit) {
+      // running the add product endpoint
+      try {
+        const response = await axios.post(`${API_URL}/products`, formData, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "multipart/form-data"
+          }
+        })
+
+        if (response.data.status) {
+          fetchAllProduct();
+          toast.success(response.data.message)
         }
-      })
-
-      if (response.data.status) {
-        fetchAllProduct();
-        toast.success(response.data.message)
+      } catch (err:any) {
+        console.log("Add Product", err)
       }
-    } catch (err:any) {
-      console.log("Add Product", err)
-    }
 
+    }else{
+      // running the edit endpoint
+      try {
+        const response = await axios.post(`${API_URL}/products/${formData.id}`, {
+          ...formData,
+          "_method": "PUT"
+        }, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "multipart/form-data",
+          }
+        })
+
+        if (response.data.status) {
+          fetchAllProduct();
+          toast.success(response.data.message)
+        }
+      } catch (err:any) {
+        console.log("Add Product", err)
+      }
+
+    }
 
     
     setFormData({
@@ -142,6 +170,8 @@ const ProductProvider = ({children} : Readonly<{children: ReactNode}>) => {
         console.log("Delete pro error", error)
       }
       setIsLoading(false)
+    }else{
+      fetchAllProduct()
     }
   }
   
@@ -149,7 +179,7 @@ const ProductProvider = ({children} : Readonly<{children: ReactNode}>) => {
 
 
     return (
-        <ProductContext.Provider value={{ formData, handleChange, handleSubmit, fileRef, isLoading, products, handleDelete  }}>
+        <ProductContext.Provider value={{ formData, setFormData, handleChange, handleSubmit, fileRef, isLoading, products, handleDelete, isEdit, setIsEdit  }}>
             {children}
         </ProductContext.Provider>
     )

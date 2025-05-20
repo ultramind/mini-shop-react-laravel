@@ -127,6 +127,10 @@ class ProductController extends Controller
 
         $data = $request->all();
 
+        // checking if descrioption is there or not
+        $data['description'] = $request->description ? $request->description : $product->description;
+        $data['cost'] = $request->cost ? $request->cost : $product->cost; 
+
         // check if request has file
         if ($request->hasFile('banner_image')) {
             if ($product->banner_image) {
