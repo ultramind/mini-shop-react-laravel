@@ -15,14 +15,17 @@ class ProductController extends Controller
     public function index()
     {
         //ge user product
-        $user_id = Auth::user()->id;
+        $user_id = auth()->user()->id;
 
         try {
-            $products = Product::where('user_id', $user_id)->get();
+            $products = Product::where('user_id', $user_id)->get()->map(function($product){
+                $product->banner_image = $product->banner_image ? asset("storage/". $product->banner_image) : null;
+                return $product;
+            });
             return response()->json([
                 'status' => true,
                 'message' => 'Products fetched successfully',
-                'data' => $products
+                'products' => $products
             ], 200);
         } catch (\Exception $err) {
             return response()->json([
